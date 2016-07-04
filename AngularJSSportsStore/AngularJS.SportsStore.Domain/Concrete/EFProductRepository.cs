@@ -27,7 +27,7 @@ namespace AngularJS.SportsStore.Domain.Concrete
             get { return DbContext.ProductSet; }
         }
 
-        public void SaveProduct(Product product)
+        public void Save(Product product)
         {
             if (product.ProductID == 0)
             {
@@ -42,13 +42,13 @@ namespace AngularJS.SportsStore.Domain.Concrete
                     dbEntry.Description = product.Description;
                     dbEntry.Price = product.Price;
                     dbEntry.Category = product.Category;
-                    dbEntry.ImageData = product.ImageData;
-                    dbEntry.ImageMimeType = product.ImageMimeType;
+                    //dbEntry.ImageData = product.ImageData;
+                    //dbEntry.ImageMimeType = product.ImageMimeType;
                 }
             }
         }
 
-        public Product DeleteProduct(int productID)
+        public Product Delete(int productID)
         {
             Product dbEntry = DbContext.ProductSet.Find(productID);
             if (dbEntry != null)

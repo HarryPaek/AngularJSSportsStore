@@ -11,8 +11,8 @@ namespace AngularJS.SportsStore.Domain.Abstract
     {
         IEnumerable<Product> Products { get; }
 
-        void SaveProduct(Product product);
+        void Save(Product product);
 
-        Product DeleteProduct(int productID);
+        Product Delete(int productID);
     }
 }

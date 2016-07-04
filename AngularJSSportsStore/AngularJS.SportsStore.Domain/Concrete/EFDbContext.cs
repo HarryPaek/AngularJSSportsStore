@@ -10,6 +10,12 @@ namespace AngularJS.SportsStore.Domain.Concrete
 {
     public class EFDbContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        public IDbSet<Product> ProductSet { get; set; }
+        public IDbSet<Error> ErrorSet { get; set; }
+
+        public virtual void Commit()
+        {
+            base.SaveChanges();
+        }
     }
 }

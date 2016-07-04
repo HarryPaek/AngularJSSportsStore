@@ -10,22 +10,32 @@ namespace AngularJS.SportsStore.Domain.Concrete
 {
     public class EFProductRepository : IProductRepository
     {
-        private EFDbContext dbContext = new EFDbContext();
+        private readonly IDbFactory dbFactory;
+        private EFDbContext dbContext;
+
+        public EFProductRepository(IDbFactory dbFactory)
+        {
+            this.dbFactory = dbFactory;
+        }
+
+        public EFDbContext DbContext {
+            get { return dbContext ?? (dbContext = dbFactory.Init()); }
+        }
 
         public IEnumerable<Product> Products
         {
-            get { return dbContext.Products; }
+            get { return DbContext.ProductSet; }
         }
 
         public void SaveProduct(Product product)
         {
             if (product.ProductID == 0)
             {
-                dbContext.Products.Add(product);
+                DbContext.ProductSet.Add(product);
             }
             else
             {
-                Product dbEntry = dbContext.Products.Find(product.ProductID);
+                Product dbEntry = DbContext.ProductSet.Find(product.ProductID);
                 if (dbEntry != null)
                 {
                     dbEntry.Name = product.Name;
@@ -36,18 +46,14 @@ namespace AngularJS.SportsStore.Domain.Concrete
                     dbEntry.ImageMimeType = product.ImageMimeType;
                 }
             }
-
-            dbContext.SaveChanges();
-
         }
 
         public Product DeleteProduct(int productID)
         {
-            Product dbEntry = dbContext.Products.Find(productID);
+            Product dbEntry = DbContext.ProductSet.Find(productID);
             if (dbEntry != null)
             {
-                dbContext.Products.Remove(dbEntry);
-                dbContext.SaveChanges();
+                DbContext.ProductSet.Remove(dbEntry);
             }
 
             return dbEntry;

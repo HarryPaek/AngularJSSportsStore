@@ -1,10 +1,6 @@
 ﻿using AngularJS.SportsStore.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace AngularJS.SportsStore.Domain.Concrete
 {
@@ -16,6 +12,11 @@ namespace AngularJS.SportsStore.Domain.Concrete
         public virtual void Commit()
         {
             base.SaveChanges();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
 }

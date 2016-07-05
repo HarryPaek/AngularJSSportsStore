@@ -9,9 +9,9 @@ namespace AngularJS.SportsStore.WebUI.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public String Index()
+        public ViewResult Index()
         {
-            return "HomeController Started";
+            return View();
         }
     }
 }

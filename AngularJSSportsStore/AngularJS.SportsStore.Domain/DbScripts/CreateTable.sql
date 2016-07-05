@@ -9,7 +9,7 @@
 	ImageMimeType   VARCHAR(50)        NULL  
 );
 
-CREATE TABLE Error
+CREATE TABLE Errors
 (
 	ID              INT            NOT NULL PRIMARY KEY IDENTITY,
 	Message         NVARCHAR(max)      NULL,

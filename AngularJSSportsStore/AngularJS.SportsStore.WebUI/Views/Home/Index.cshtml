@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="sportsStore">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sports Store</title>
+    <script src="~/Scripts/angular.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <script>
+        angular.module('sportsStore', ['customFilters']);
+    </script>
+    <script src="~/Apps/sportsStore.js"></script>
+    <script src="~/Apps/filters/customFilters.js"></script>
+    <script src="~/Apps/controllers/productListController.js"></script>
+</head>
+<body ng-controller="sportsStoreCtrl">
+    <div class="navbar navbar-inverse">
+        <a class="navbar-brand" href="#">SPORTS STORE</a>
+    </div>
+    <div class="panel panel-default row" ng-controller="productListCtrl">
+        <div class="col-xs-3">
+            <a ng-click="selectCategory()" class="btn btn-block btn-default btn-lg">Home</a>
+            <a ng-repeat="item in data.products | orderBy:'Categoty' | unique:'Category'"
+               ng-click="selectCategory(item)" class="btn btn-block btn-default btn-lg" ng-class="{'btn-primary': isCategorySelected(item)}">{{item}}</a>
+        </div>
+        <div class="col-xs-8">
+            <div class="well" ng-repeat="item in data.products | filter:categoryFilterFn | range:selectedPage:pageSize">
+                <h3>
+                    <strong>{{item.Name}}</strong>
+                    <span class="pull-right label label-primary">{{item.Price | currency}}</span>
+                </h3>
+                <span class="lead">{{item.Description}}</span>
+            </div>
+            <div class="pull-right btn-group">
+                <a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize" ng-click="selectPage($index + 1)"
+                   class="btn btn-default" ng-class="{'btn-primary':isPageSelected($index + 1)}">{{$index + 1}}</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

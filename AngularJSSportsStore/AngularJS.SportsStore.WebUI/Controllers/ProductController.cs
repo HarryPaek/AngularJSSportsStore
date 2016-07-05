@@ -7,27 +7,44 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using AngularJS.SportsStore.Domain.Abstract;
 using AngularJS.SportsStore.WebUI.Infrastructure.Core;
+using AngularJS.SportsStore.Domain.Entities;
 
 namespace AngularJS.SportsStore.WebUI.Controllers
 {
     [RoutePrefix("api/Products")]
     public class ProductController : ApiControllerBase
     {
-        private readonly IProductRepository productRepository;
+        private readonly IProductRepository repository;
 
         public ProductController(IProductRepository productRepository, IErrorRepository errorRepository, IUnitOfWork unitOfWork) : base(errorRepository, unitOfWork)
         {
-            this.productRepository = productRepository;
+            this.repository = productRepository;
         }
 
-        [Route("")]
-        public HttpResponseMessage Get(HttpRequestMessage request)
+        [Route("{page:int=1}/{pageSize=3}/{category?}")]
+        public HttpResponseMessage Get(HttpRequestMessage request, int? page, int? pageSize, string category = null)
         {
+            int currentPage = page.Value;
+            int currentPageSize = pageSize.Value;
+
             return CreateHttpResponse(request, () => {
                 HttpResponseMessage response = null;
-                var products = productRepository.Products;
+                IEnumerable<Product> productQuery = repository.Products.Where(p => category == null || p.Category == category);
 
-                response = request.CreateResponse(HttpStatusCode.OK, products);
+                int totalProducts = productQuery.Count();
+                var products = productQuery.Skip((currentPage -1) * currentPageSize)
+                                           .Take(currentPageSize)
+                                           .ToList();
+
+                PaginationSet<Product> pagedSet = new PaginationSet<Product>
+                {
+                    Page = currentPage,
+                    TotalCount = totalProducts,
+                    TotalPages = (int)Math.Ceiling((decimal)totalProducts / currentPageSize),
+                    Items = products
+                };
+
+                response = request.CreateResponse<PaginationSet<Product>>(HttpStatusCode.OK, pagedSet);
 
                 return response;
             });

@@ -9,10 +9,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>Sports Store</title>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <script>
-        angular.module('sportsStore', ['customFilters']);
+        angular.module('sportsStore', ['ui.bootstrap', 'customFilters']);
     </script>
     <script src="~/Apps/sportsStore.js"></script>
     <script src="~/Apps/filters/customFilters.js"></script>
@@ -37,8 +38,9 @@
                 <span class="lead">{{item.Description}}</span>
             </div>
             <div class="pull-right btn-group">
-                <a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize" ng-click="selectPage($index + 1)"
-                   class="btn btn-default" ng-class="{'btn-primary':isPageSelected($index + 1)}">{{$index + 1}}</a>
+                <uib-pagination total-items="paging.totalCount" ng-model="paging.currentPage" items-per-page="paging.itemsPerPage" max-size="paging.maxSize" previous-text="&lsaquo;" next-text="&rsaquo;"></uib-pagination>
+                @*<a ng-repeat="page in data.products | filter:categoryFilterFn | pageCount:pageSize" ng-click="selectPage($index + 1)"
+                   class="btn btn-default" ng-class="{'btn-primary':isPageSelected($index + 1)}">{{$index + 1}}</a>*@
             </div>
         </div>
     </div>

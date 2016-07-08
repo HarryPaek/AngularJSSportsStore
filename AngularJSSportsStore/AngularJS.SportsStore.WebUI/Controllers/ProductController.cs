@@ -21,7 +21,7 @@ namespace AngularJS.SportsStore.WebUI.Controllers
             this.repository = productRepository;
         }
 
-        [Route("{page:int=1}/{pageSize=3}/{category?}")]
+        [Route("{page:int=1}/{pageSize=4}/{category?}")]
         public HttpResponseMessage Get(HttpRequestMessage request, int? page, int? pageSize, string category = null)
         {
             int currentPage = page.Value;

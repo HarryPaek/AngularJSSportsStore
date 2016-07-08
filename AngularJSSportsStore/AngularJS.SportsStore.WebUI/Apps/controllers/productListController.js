@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var app = angular.module('sportsStore');
-app.constant("productPerPage", 3);
+app.constant("productPerPage", 4);
 
 app.controller('productListCtrl', ['$scope', '$filter', 'productPerPage', function ($scope, $filter, productPerPage) {
     var selectedCategory = null;
